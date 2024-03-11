@@ -1,38 +1,41 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const {verifyAToken} = require('../middleware/authentication')
-const routes = express.Router()
-//Import all model's objects
-const {users, products} = require('../model')
-//User's router
-routes.get('/Users', (req, res)=>{
-    users.fetchUsers(req, res)
+import { users} from '../model/index.js'
+import express from 'express'
+import bodyParser from 'body-parser'
+import { verifyAToken } from '../middleware/UserAuthentication.js'
+const userRouter = express.Router()
+// Fetch users
+userRouter.get('/', (req, res)=>{
+    try{
+        users.fetchUsers(req, res)
+    }catch(e){
+        res.json({
+            status: res.statusCode,
+            msg: 'Failed to retrieve users'
+        })
+    }
 })
-routes.get('/Users/:id', (req, res)=>{
-    users.fetchUser(req, res)
+//  Fetch user
+userRouter.get('/:id', (req, res)=>{
+    try{
+        users.fetchUser(req, res)
+    }catch(e){
+        res.json({
+            status: res.statusCode,
+            msg: 'Failed to retrieve a user'
+        })
+    }
 })
-routes.post('/register',bodyParser.json(),
-(req, res)=>{
-    users.register(req, res)
+// Add a user
+userRouter.post('/register',bodyParser.json, (req, res)=>{
+    try{
+        users.createUser(req, res)
+    }catch(e){
+        res.json({
+            status: res.statusCode,
+            msg: 'Failed to add a new user'
+        })
+    }
 })
-routes.put('/User/:id', bodyParser.json(),
- (req, res)=>{
-    users.updateUser(req,res)
-})
-routes.patch('/User/:id', bodyParser.json(),
- (req, res)=>{
-    users.updateUser(req,res)
-})
-routes.delete('/User/:id', (req, res)=>{
-    users.delete(req, res)
-})
-routes.post('/login',
-bodyParser.json(), (req, res)=>{
-    users.login(req, res)
-})
-
-module.exports = {
-    express,
-    routes,
-    verifyAToken
+export{
+    userRouter, express
 }
