@@ -1,74 +1,74 @@
 <template>
-    <nav class="navbar navbar-expand-lg">
-   <div class="container-fluid">
-     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-       <span class="navbar-toggler-icon"></span>
-     </button>
-     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-         <li class="nav-item text-black">
-           <router-link to="/" class="nav-link active">
-             Home
-           </router-link> 
-         </li>
-         <li class="nav-link active">
-           <router-link to="/about" class="text-black">
-             About
-           </router-link> 
-         </li>
-         <li class="nav-link active text-black">
-           <router-link to="/products" class="text-black">
-             Products
-           </router-link> 
-         </li>
-         <li class="nav-link active">
-           <router-link to="/admin" class="text-black">
-             Admin
-           </router-link> 
-         </li>
-         <li class="nav-link active">
-           <router-link to="/checkout" class="text-black">
-             Checkout
-           </router-link> 
-         </li>
-         <li class="nav-link active">
-           <router-link to="/reviews" class="text-black">
-             Reviews
-           </router-link> 
-         </li>
-         <li class="nav-link active">
-           <router-link to="/contact" class="text-black">
-             Contact
-           </router-link>
-         </li>
- 
-         </ul>
-     </div>
-   </div>
- </nav>
- </template>
- 
- <script>
-     export default {
-        //  name: 'Navbar',
-         
-     }
- </script>
- 
- <style scoped>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link to="/" class="nav-link lobster-text">
+              Home
+            </router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link to="/about" class="nav-link lobster-text">
+              About
+            </router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link to="/products" class="nav-link lobster-text">
+              Products
+            </router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link to="/admin" class="nav-link lobster-text">
+              Admin
+            </router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link to="/checkout" class="nav-link lobster-text">
+              Checkout
+            </router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link to="/reviews" class="nav-link lobster-text">
+              Reviews
+            </router-link> 
+          </li>
+          <li class="nav-item">
+            <router-link to="/contact" class="nav-link lobster-text">
+              Contact
+            </router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script>
+export default {
+  // name: 'Navbar',
+}
+</script>
+
+<style scoped>
 .navbar {
-    background-color: #f7f4f3;
-    color: white;
+  background-color: #716604;
+  color: white;
 }
 
 .navbar-nav {
-    color: white;
+  color: white;
 }
 
-.nav-link {
-    color: white;
-    
+.lobster-text {
+  color: white;
+  font-family: 'Lobster', cursive;
 }
 
-
+.navbar-nav {
+  margin-left: auto;
+}
 </style>
