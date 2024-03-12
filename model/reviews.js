@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const app = express();
-const port = 3000;
+const port = 3306;
 app.use(bodyParser.json());
 const pool = mysql.createPool({
   host: 'bp8g9cetke7cu1mgnwin-mysql.services.clever-cloud.com',
