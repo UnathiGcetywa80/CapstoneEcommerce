@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <img src="https://i.postimg.cc/9QfTh0tF/xy55bl5mzam-uai-1600x900.jpg" class="homePage" alt="">
+    <img src="https://i.postimg.cc/qvGVKcjK/pngtree-library-backdrop-with-antique-books-bookstore-shelves-and-a-treasure-trove-of-knowledge-publ.jpg" alt="" class="homePage">
     <div class="overlay-text">
-      <p>BE BRIGHT</p>
+      <p class="bright-text">BE BRIGHT</p>
     </div>
   </div>
 </template>
@@ -15,6 +15,13 @@ export default {
 </script>
 
 <style scoped>
+.home {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
 .homePage {
   width: 100%;
   height: 100%;
@@ -23,11 +30,15 @@ export default {
 
 .overlay-text {
   position: absolute;
-  top: 50%; /* Adjust the top position as needed */
-  left: 50%; /* Adjust the left position as needed */
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: white; /* Adjust text color */
-  font-size: 100px; /* Adjust font size */
+  color: rgb(250, 247, 247);
+}
+
+.bright-text {
+  font-family: 'Lobster', cursive;
+  font-size: 100px;
 }
 </style>
