@@ -41,6 +41,11 @@
               Contact
             </router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/login" class="nav-link lobster-text">
+              Login
+            </router-link>
+          </li>
         </ul>
       </div>
     </div>
