@@ -1,12 +1,12 @@
 import { connection as db } from "../config/index.js";
 import { hash, compare } from 'bcrypt'
-import { createToken } from "../middleware/UserAuthentication.js";
-class users{
+import { createToken } from "../middleware/UsersAuthetication.js";
+class Users{
     fetchUsers(req, res){
         const qry = `
-        SELECT user_id, username, password,
-        email, full_name
-        users;
+        SELECT username, password,
+        email, full_name created_at FROM
+        Users;
         `
         db.query(qry, (err,results)=>{
             if(err) throw err
@@ -17,9 +17,9 @@ class users{
         })
     }
     fetchUser(req, res) {
-        const qry = `
-            FROM users
-            WHERE userID = ${req.params.id};
+        const qry = `SELECT username, password,
+        email, full_name created_at FROM Users
+            WHERE user_id = ${req.params.user_id};
             `;
         db.query(qry, (err, result) => {
           if (err) throw err;
@@ -32,13 +32,13 @@ class users{
         async createUser(req, res){
             // payload
             let data = req.body
-            data.userPwd = await hash(data?.userPwd, 10)
+            data.password = await hash(data?.password, 10)
             let user = {
-                emailAdd: data.emailAdd,
-                userPwd: data.userPwd
+                email: data.email,
+                password: data.password
             }
             const qry = `
-            insert into userw
+            insert into Users
             set ?;
             `
             db.query(qry, [data], (err)=>{
@@ -60,14 +60,14 @@ class users{
             }
   async updateUser(req, res) {
             const data = req.body;
-            if (data?.userPwd) {
-              data.userPwd = await hash(data.userPwd, 8);
+            if (data?.password) {
+              data.password = await hash(data.password, 8);
             }
             const qry = `
               UPDATE Users
               SET ?
-              WHERE userID = ?`;
-            db.query(qry, [data, req.params.id], (err) => {
+              WHERE user_id = ?`;
+            db.query(qry, [data, req.params.user_id], (err) => {
               if (err) throw err;
               res.json({
                 status: res.statusCode,
@@ -78,8 +78,8 @@ class users{
   async deleteUser(req, res) {
             const qry = `
               DELETE FROM Users
-              WHERE userID = ?`;
-            db.query(qry, [req.params.id], (err) => {
+              WHERE user_id = ?`;
+            db.query(qry, [req.params.user_id], (err) => {
               if (err) throw err;
               res.json({
                 status: res.statusCode,
@@ -90,10 +90,10 @@ class users{
  login(req, res){
         const {emailAdd, userPwd} = req.body
         const qry = `
-        SELECT user_id, username, password,
-        email, full_name
+        SELECT username, password,
+        email, full_name created_at
         FROM Users
-        WHERE emailAdd = '${emailAdd}';
+        WHERE email = '${email}';
         `
         db.query(qry, async(err, result)=>{
             if (err) throw err
@@ -103,11 +103,11 @@ class users{
                     msg: "Wrong email address provided"
                 })
             }else{
-                const validPass = await compare(userPwd, result[0].userPwd)
+                const validPass = await compare(password, result[0].password)
                 if(validPass){
                     const token = createToken({
-                        emailAdd,
-                        userPwd
+                        email,
+                        password
                     })
                     res.json({
                         status: res.statusCode,
@@ -125,5 +125,5 @@ class users{
         })
     }}
         export{
-            users
+            Users
         }

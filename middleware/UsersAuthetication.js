@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import jwt from "jsonwebtoken";
+
 const { sign, verify } = jwt
 //Payload(email, password - information from the user) to create a token
 function createToken(user){
