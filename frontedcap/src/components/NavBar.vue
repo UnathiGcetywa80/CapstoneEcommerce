@@ -43,7 +43,7 @@
           </li>
           <li class="nav-item">
             <router-link to="/login" class="nav-link lobster-text">
-              Login
+              Login/Register  
             </router-link>
           </li>
         </ul>

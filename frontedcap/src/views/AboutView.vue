@@ -16,8 +16,7 @@ In summary, reading books is a multifaceted activity that not only imparts knowl
       <div>
         <h2 class="display-2" id="Aboutpage1">Meet the founder</h2>
         <img src="https://i.postimg.cc/SN6xN4mV/gcetywa-home-image.jpg" alt="">
-        <p>
-          
+        <p> 
 </p>
       </div>
     </div>
