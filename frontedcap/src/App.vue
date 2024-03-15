@@ -2,17 +2,19 @@
   <main class="container-fluid">
     <NavBar></NavBar>
     <Footer></Footer>
+    <spinner></spinner>
   <router-view/>
 </main>
 </template>
 <script>
 import NavBar from './components/NavBar.vue';
 import Footer from './components/Footer.vue';
-
+import Spinner from './components/Spinner.vue';
 export default {
   components:{
     NavBar,
-    Footer
+    Footer,
+    Spinner
 
   }
 }
@@ -39,4 +41,4 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-</style>./components/Footer.vue -->
+</style>./components/Footer.vue -->./components/SpinnerComp.vue
