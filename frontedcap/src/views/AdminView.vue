@@ -8,25 +8,19 @@
         <thead>
           <tr>
             <th>User ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Role</th>
+            <th>Username</th>
             <th>Email</th>
-            <th>Profile URL</th>
+            <th>Full name</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="user in users" :key="user.userId">
             <td>{{ user.userId }}</td>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.userAge }}</td>
-            <td>{{ user.gender }}</td>
-            <td>{{ user.userRole }}</td>
-            <td>{{ user.emailAdd }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.full_name }}</td>
+
             <td><img :src="user.profileUrl" alt=""></td>
             <td>
               <!-- SVG icon button for editing -->
@@ -56,10 +50,10 @@
           <tr>
             <th>Product ID</th>
             <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Amount</th>
             <th>Category</th>
-            <th>Product URL</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>description</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -67,8 +61,9 @@
           <tr v-for="product in products" :key="product.prodID">
             <td>{{ product.prodID }}</td>
             <td>{{ product.prodName }}</td>
+            <td>{{ product.Category }}</td>
             <td>{{ product.quantity }}</td>
-            <td>{{ product.amount }}</td>
+            <td>{{ product.price }}</td>
             <td>{{ product.Category }}</td>
             <td><img :src="product.prodUrl" alt="product"></td>
             <td>
