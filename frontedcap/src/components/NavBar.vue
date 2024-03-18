@@ -1,6 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
+      <!-- <a class="navbar-brand" href="#">
+        <img src="https://i.postimg.cc/nhjKLxXL/BOOK-SHOP.png" alt="Logo" height="30">
+      </a> -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
