@@ -1,168 +1,118 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-const fullStackEOMPUrl = "";
-
+let CapstoneEcommerceUrl = "http://localhost:4500/";
 export default createStore({
   state: {
-    users: null,
-    user: null,
     products: null,
     product: null,
-    spinner: false,
+    users: null,
     token: null,
-    msg: null
   },
   getters: {
   },
   mutations: {
-    setUsers(state, users){
-      state.users =users
-    },
-    setUser(state, user){
-      state.user =user
-    },
     setProducts(state, products){
       state.products =products
     },
     setProduct(state, product){
       state.product = product
     },
-    setSpinner(state, value){
-      state.spinner = value
+    setMsg(state, Msg){
+      state.Msg = Msg
     },
-    setToken(state, token){
-      state.token = token
+    setUsers(state, users){
+      state.users = users;
     },
-    setmsg(state, msg){
-      state.msg = msg
+    addUser(state, newUser) {
+      state.users.push(newUser);
     },
-    setDeletionStatus(state, status) {
-      state.deletionStatus = status;
+    removeUser(state, ID) {
+      state.users = state.users.filter(user => user.ID !== ID);
     },
-    deleteUser(state, userID) {
-      const index = state.users.findIndex(user => user.userId === userID);
-      if (index !== -1) {
-        state.users.splice(index, 1);
-      }
+    updateUser(state, ID) {
+        state.users = state.users.filter(user => user.ID !== ID);
+      },
+      submitForm(state, formData) {
+        state.users.push(formData);
+      },
     },
-  },
   actions: {
-    async fetchUsers(context) {
-      try{
-        const {data} = await axios.get(`${fullStackEOMPUrl}users`)
-        context.commit("setUsers", data.results)
-        console.log(data.results);
-      }catch(e){
-        context.commit("setMsg", "An error occured.")
-      }
-    },
-    
     async fetchProducts(context) {
       try{
-        const {data} = await axios.get(`${fullStackEOMPUrl}products`)
+        const {data} = await axios.get(`${CapstoneEcommerceUrl}products`)
         context.commit("setProducts", data.results)
         console.log(data.results);
       }catch(e){
         context.commit("setMsg", "An error occured.")
       }
     },
-    async fetchProduct(context, prodID) {
+    async fetchProduct(context, ID) {
       try {
-        const { data } = await axios.get(`${fullStackEOMPUrl}products/${prodID}`);
-        context.commit("setProduct", data.result[0]);
-        console.log(data.result);
+        const { result } = await (await axios.get(`${CapstoneEcommerceUrl}products/${ID}`)).data;
+        context.commit("setProduct", result[0]);
       } catch (e) {
         context.commit("setMsg", "An error occurred.");
       }
     },
-
-     // Action to delete a user
-     async deleteUser(context, userID) {
+    async fetchUsers(context) {
       try {
-        context.commit("setDeletionStatus", null);
-
-        const response = await axios.delete(`${fullStackEOMPUrl}user/${userID}`);
-
-        if (response.status !== 200) {
-          throw new Error(`Failed to delete user. Status: ${response.status}`);
-        }
-
-        // You don't need to commit "deleteUser" mutation here
-        context.commit("setDeletionStatus", "success");
+        const {data} = await axios.get(`${CapstoneEcommerceUrl}users`)
+        context.commit("setUsers", data.results)
+        console.log(data.results);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    },
+    async addUser(context, newUser) {
+      try {
+        const response = await axios.post(`${CapstoneEcommerceUrl}users/register`, newUser);
+        context.commit("addUser", response.data);
+        console.log("User added successfully!");
+      } catch (error) {
+        console.error("Error adding user:", error);
+        throw error;
+      }
+    },
+    async deleteUser(context, ID) {
+      try {
+        await axios.delete(`${CapstoneEcommerceUrl}users/${ID}`);
+        context.commit("removeUser", ID);
+        console.log("User deleted successfully!");
       } catch (error) {
         console.error("Error deleting user:", error);
-        context.commit("setDeletionStatus", "error");
       }
     },
-  
-  
-
-    
-    // async deleteUser(context, userID) { 
-    //   try {
-    //     context.commit("setDeletionStatus", null);
-        
-    //     const response = await axios.delete(`${fullStackEOMPUrl}user/${userID}`);
-        
-    //     if (response.status !== 200) {
-    //       throw new Error(`Failed to delete user. Status: ${response.status}`);
-    //     }
-        
-    //     context.commit("deleteUser", userID); 
-    //     context.commit("setDeletionStatus", "success"); 
-    //   } catch (error) {
-    //     console.error("Error deleting user:", error);
-    //     context.commit("setDeletionStatus", "error"); 
-    //   }
-    // },
-    
-    async deleteProduct(context, prodID) {
+    async updateUser(context, ID) {
       try {
-        context.commit("setDeletionStatus", null);
-        
-        const response = await axios.delete(`${fullStackEOMPUrl}products/${prodID}`);
-        
-        if (response.status !== 200) {
-          throw new Error(`Failed to delete product. Status: ${response.status}`);
-        }
-        
-        context.commit("removeProduct", prodID);
-        context.commit("setDeletionStatus", "success");
+        await axios.patch(`${CapstoneEcommerceUrl}users/${ID}`);
+        console.log("User updated successfully!");
+        context.dispatch('fetchUsers');
       } catch (error) {
-        console.error("Error deleting product:", error);
-        context.commit("setDeletionStatus", "error");
+        console.error("Error updating user:", error);
       }
-    },
-     updateProduct(context, updatedData) {
-      try {
-        const response = axios.put(`${fullStackEOMPUrl}products/${updatedData.prodID}`, updatedData);
-        
-        if (response.status !== 200) {
-          throw new Error(`Failed to update product. Status: ${response.status}`);
-        }
-        
-        // context.commit("updateProduct", { prodID, updatedData });
-        context.commit("setEditStatus", "success");
-      } catch (error) {
-        console.error("Error editing product:", error);
-        context.commit("setEditStatus", "error");
-      }
-    },
-    // async updateUser(context, { prodID, updatedData }) {
-    //   try {
-    //     const response = await axios.patch(`${fullStackEOMPUrl}/user/${userId}`, updatedData);
-        
-    //     if (response.status !== 200) {
-    //       throw new Error(`Failed to update user. Status: ${response.status}`);
-    //     }
-    //     context.commit("updateUser", { prodID, updatedData });
-    //     context.commit("setEditStatus", "success");
-    //   } catch (error) {
-    //     console.error("Error editing product:", error);
-    //     context.commit("setEditStatus", "error");
-    //   }
-    // }
+    }
+  },
+  async deleteProduct(context, ID) {
+    try {
+      await axios.delete(`${CapstoneEcommerceUrl}products/${ID}`);
+      context.commit("removeProduct", ID);
+      console.log("Product deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  },
+  async submitForm() {
+    try {
+      const response = await axios.post('/checkout', this.formData);
+      console.log(response.data);
+      this.submitted = true;
+    } catch (error) {
+      console.error('Error:', error);
+      this.error = true;
+      this.errorMessage = error.message || 'An error occurred during checkout.';
+    }
   },
   modules: {
   }
-})
+}
+)
