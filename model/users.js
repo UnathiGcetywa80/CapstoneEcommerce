@@ -4,8 +4,7 @@ import { createToken } from "../middleware/UsersAuthetication.js";
 class Users{
     fetchUsers(req, res){
         const qry = `
-        SELECT username, password,
-        email, full_name created_at FROM
+        SELECT * FROM
         Users;
         `
         db.query(qry, (err,results)=>{

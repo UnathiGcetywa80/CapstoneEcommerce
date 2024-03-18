@@ -2,27 +2,26 @@ import { connection as db } from "../config/index.js";
 class Products{
     fetchProducts(req, res){
         const qry = `
-        select product_name category price stock_quantity description created_at imagURL
-        from Products;
+        SELECT * FROM Products;
         `
-        db.query(qry, (err, results) => {
-            if(err) throw err;
+        db.query(qry, (err, results)=>{
+            if(err) throw err
             res.json({
                 status: res.statusCode,
                 results
             })
         })
     }
+        
     fetchProduct(req, res){
         const qry = `
-        select product_name category price stock_quantity description created_at imagURL
-        from Products
-        where product_id = ${req.params.product_id}`
-        db.query(qry, (err, results) => {
-            if(err) throw err;
+        SELECT * FROM Products WHERE product_id = '${req.params.id}';
+        `
+        db.query(qry, (err, result)=>{
+            if(err) throw err
             res.json({
                 status: res.statusCode,
-                results
+                result: result[0]
             })
         })
     }
