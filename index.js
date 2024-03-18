@@ -19,7 +19,7 @@ app.get('^/$|/bebright', (req, res)=>{
     res.statusCode(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', usersRouter)
-app.use('/product', productRouter)
+app.use('/products', productRouter)
 app.use(errorHandling)
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);

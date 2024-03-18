@@ -2,7 +2,7 @@ import { connection as db } from "../config/index.js";
 class Products{
     fetchProducts(req, res){
         const qry = `
-        select product_name category price stock_quantity description created_at
+        select product_name category price stock_quantity description created_at imagURL
         from Products;
         `
         db.query(qry, (err, results) => {
@@ -15,7 +15,7 @@ class Products{
     }
     fetchProduct(req, res){
         const qry = `
-        select product_name category price stock_quantity description created_at
+        select product_name category price stock_quantity description created_at imagURL
         from Products
         where product_id = ${req.params.product_id}`
         db.query(qry, (err, results) => {
