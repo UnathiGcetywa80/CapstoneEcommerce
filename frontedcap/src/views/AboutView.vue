@@ -13,12 +13,6 @@ There are many benefits to reading, from making you smarter to improve your read
 In summary, reading books is a multifaceted activity that not only imparts knowledge but also enhances various aspects of personal development, well-being, and connectivity with the world. Cultivating a habit of reading can have long-lasting positive effects on individuals and society as a whole.
 </p>
       </div>
-      <div>
-        <h2 class="display-2" id="Aboutpage1">Meet the founder</h2>
-        <img src="https://i.postimg.cc/SN6xN4mV/gcetywa-home-image.jpg" alt="">
-        <p> 
-</p>
-      </div>
     </div>
   </div>
 </template>
