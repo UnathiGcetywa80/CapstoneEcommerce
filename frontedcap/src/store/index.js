@@ -118,36 +118,45 @@ export default createStore({
         console.error("Error deleting user:", error);
       }
     },
-    // async updateUser(context, user_id) {
-    //   try {
-    //     await axios.patch(`${CapstoneEcommerceUrl}Users/${user_id}`);
-    //     console.log("User updated successfully!");
-    //     context.dispatch('fetchUsers');
-    //   } catch (error) {
-    //     console.error("Error updating user:", error);
-    //   }
-    // },
-    // async deleteProduct(context, product_id) {
-    //   try {
-    //     await axios.delete(`${CapstoneEcommerceUrl}Products/${product_id}`);
-    //     context.commit("removeProduct", product_id);
-    //     console.log("Product deleted successfully!");
-    //   } catch (error) {
-    //     console.error("Error deleting product:", error);
-    //   }
-    // },
+    async updateUser(context, user_id) {
+      try {
+        await axios.patch(`${CapstoneEcommerceUrl}Users/${user_id}`);
+        console.log("User updated successfully!");
+        context.dispatch('fetchUsers');
+      } catch (error) {
+        console.error("Error updating user:", error);
+      }
+    },
+    async deleteProduct(context, product_id) {
+      try {
+        console.log(product_id);
+        let {msg} = (await axios.delete(`${CapstoneEcommerceUrl}products/deleteProduct/${product_id}`)).data;
+        console.log("msg ->" +msg);
+        if(msg){
+          context.commit("setProduct");
+        }
 
-    // async submitForm() {
-    //   try {
-    //     const response = await axios.post('/Checkout', this.formData);
-    //     console.log(response.data);
-    //     this.submitted = true;
-    //   } catch (error) {
-    //     console.error('Error:', error);
-    //     this.error = true;
-    //     this.errorMessage = error.message || 'An error occurred during checkout.';
-    //   }
-    // },
+      } catch (error) {
+        sweet({
+          title: 'Error',
+          text: 'Failed to deleted Product.',
+          icon: 'error',
+          timer: 2000
+        });
+      }
+    },
+
+    async submitForm() {
+      try {
+        const response = await axios.post('/Checkout', this.formData);
+        console.log(response.data);
+        this.submitted = true;
+      } catch (error) {
+        console.error('Error:', error);
+        this.error = true;
+        this.errorMessage = error.message || 'An error occurred during checkout.';
+      }
+    },
   },
   modules: {
   }
