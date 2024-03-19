@@ -43,4 +43,4 @@ function calculateOrderAmount(items) {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-//checkout
+//checkout.js

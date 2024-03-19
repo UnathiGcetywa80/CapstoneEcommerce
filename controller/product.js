@@ -56,3 +56,4 @@ productRouter.delete('/deleteProduct/:product_id', bodyParser.json(), (req, res)
 export{
     productRouter
 }
+//controller

@@ -38,4 +38,4 @@ class Products{
 export{
     Products
 }
-//products
+//products.js

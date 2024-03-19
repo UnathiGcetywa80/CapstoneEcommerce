@@ -8,3 +8,4 @@ export{
     users,
     products
 }
+//index.js
