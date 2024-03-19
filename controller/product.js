@@ -17,7 +17,7 @@ productRouter.get('/:product_id', (req, res)=>{
     try{
         products.fetchProduct(req, res)
     }catch(e){
-        res.join({
+    res.join({
             status: res.statusCode,
             msg: 'Failed to retrieve product'
         })
