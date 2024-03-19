@@ -1,6 +1,9 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-import sweet from "sweetalert";
+import sweet from "sweetalert"
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+import AuthenticateUser from "../service/AuthenticatedUser";
 let CapstoneEcommerceUrl = "https://capstoneecommerce-1.onrender.com/";
 export default createStore({
   state: {
@@ -142,6 +145,44 @@ export default createStore({
           text: 'Failed to deleted Product.',
           icon: 'error',
           timer: 2000
+        });
+      }
+    },
+    async registerUser(context, userdata) {
+      try {
+        console.log(userdata);
+        let {result, msg, token} = await axios.post(`${CapstoneEcommerceUrl}users/register`, userdata);
+        console.log("msg ->" + result);
+        if(result){
+          context.commit("setUser", userdata )
+          cookies.set("User", {
+            msg,
+            token,
+            result,
+          });
+          AuthenticateUser.applyToken(token);
+          sweet({
+            title: "Success",
+            text: "User registered successfully!",
+            icon: "success",
+            timer: 2000,
+          });
+        } else{
+          sweet({
+            title: "Error",
+            text: "Failed to register user. Please try again.",
+            icon: "error",
+            timer: 2000,
+          });
+        }
+
+      } catch (error) {
+        console.error("Error during user registration:", error);
+        sweet({
+          title: "Error",
+          text: "An error occurred during user registration.",
+          icon: "error",
+          timer: 2000,
         });
       }
     },
