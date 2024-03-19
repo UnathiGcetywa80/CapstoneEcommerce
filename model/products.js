@@ -16,7 +16,7 @@ class Products{
     fetchProduct(req, res){
         const qry = `
         SELECT product_id,product_name,category, price,stock_quantity,description,created_at,Image 
-        FROM Products WHERE product_id = '${req.params.id}';
+        FROM Products WHERE product_id = ${req.params.id};
         `
         db.query(qry, (err, result)=>{
             if(err) throw err
