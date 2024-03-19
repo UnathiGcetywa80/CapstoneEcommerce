@@ -1,51 +1,20 @@
 <template>
-    <div>
-      <input v-model="searchQuery" placeholder="Search products" />
-      <select v-model="selectedCategory">
-        <option value="">All categories</option>
-        <option v-for="category in uniqueCategories" :value="category" :key="category">{{ category }}</option>
-      </select>
-       <!-- <SpinnerComp/> -->
-       <CardComp :products="products"/>
-     </div>
+  <div>
+    <h1>{{ product.name }}</h1>
+    <img :src="Product.imageUrl" :alt="Product.name">
+    <p>Product.description:{{ Product.description }}</p>
+    <p>Product_id: {{ product_id  }}</p>
+    <p>Product_name : {{ product_name  }}</p>
+    <p>Category: {{ category }}</p>
+    <p>Price: {{ price  }}</p>
+    <p>Quantity: {{stock_quantity }}</p>
+    <p>Description: {{  description}}</p>
+
     
-   </template>
-   
-   <script>
-//    import SpinnerComp from '@/components/SpinnerComp.vue';
-//    import CardComp from '@/components/CardComp.vue'
-   export default {
-     props: {
-       product: Object
-     },
-     data() {
-       return {
-         selectedProduct: null,
-       };
-     },
-     watch: {
-       product: {
-         immediate: true,
-         handler(newVal) {
-           this.selectedProduct = newVal;
-         },
-       },
-     },
-    //  components: {SpinnerComp ,CardComp,},
-    //  props: {
-    //    products: Array,
-    //  },
-     computed: {
-       products() {
-         return this.$store.state.products;
-       },
-     },
-     mounted() {
-       this.$store.dispatch('fetchProducts');
-     },
-   };
-   </script>
-  
-   <style scoped>
-  
-   </style>
+  </div>
+</template>
+
+
+<style scoped>
+
+</style>
