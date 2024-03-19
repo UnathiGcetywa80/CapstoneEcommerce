@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-let CapstoneEcommerceUrl = "https://capstoneecommerce.onrender.com/";
+let CapstoneEcommerceUrl = "https://capstoneecommerce-1.onrender.com/";
 export default createStore({
   state: {
     products: null,
