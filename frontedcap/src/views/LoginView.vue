@@ -3,13 +3,13 @@
         <div class="container">
             <div class="register-container">
                 <h2>Register</h2>
-                <form id="registerForm">
-                    <input type="text" placeholder="Username" id="username" required>
-                    <input type="email" placeholder="Email" id="email" required>
-                    <input type="password" placeholder="Password" id="password" required>
+                <form id="registerForm" @submit.prevent="registerFormSubmit">
+                    <input type="text" v-model="userData.username" placeholder="Username" id="username" required>
+                    <input type="email" v-model="userData.email" placeholder="Email" id="email" required>
+                    <input type="password" v-model="userData.password" placeholder="Password" id="password" required>
                     <button type="submit">Register</button>
                 </form>
-                <p>Already have an account? <a href="login.html">Login here</a></p>
+                <!-- <p>Already have an account? <a href="login.html">Login here</a></p> -->
             </div>
             <div class="login-container">
                 <h2>Login</h2>
@@ -18,11 +18,34 @@
                     <input type="password" placeholder="Password" id="password" required>
                     <button type="submit">Login</button>
                 </form>
-                <p>Don't have an account? <a href="register.html">Register here</a></p>
+                <!-- <p>Don't have an account? <a href="register.html">Register here</a></p> -->
             </div>
         </div>
     </body>
     </template>
+
+    <script scoped>
+        export default{
+            name : 'loginViewww',
+
+            data(){
+                return {
+                    userData : {
+                        username : '',
+                        email : '',
+                        password : ''
+                    }
+                }
+            },
+
+            methods : {
+                registerFormSubmit(){
+                    this.$store.dispatch('registerUser', this.userData)
+                }
+            }
+
+        }
+    </script>
     
     <style>
     body, h2, form, input, button, p, a {
