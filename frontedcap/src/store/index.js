@@ -1,11 +1,12 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-let CapstoneEcommerceUrl = "http://localhost:4500/";
+let CapstoneEcommerceUrl = "https://capstoneecommerce.onrender.com/";
 export default createStore({
   state: {
     products: null,
     product: null,
     users: null,
+    user: null,
     token: null,
   },
   getters: {
@@ -23,32 +24,46 @@ export default createStore({
     setUsers(state, users){
       state.users = users;
     },
+    setUser(state, user){
+      state.user = user;
+    },
     addUser(state, newUser) {
       state.users.push(newUser);
     },
-    removeUser(state, ID) {
-      state.users = state.users.filter(user => user.ID !== ID);
+    removeUser(state, user_id) {
+      state.users = state.users.filter(user => user.id !== user_id);
     },
-    updateUser(state, ID) {
-        state.users = state.users.filter(user => user.ID !== ID);
-      },
-      submitForm(state, formData) {
-        state.users.push(formData);
-      },
+    updateUser(state, updatedUser) {
+      state.users = state.users.map(user => {
+        if (user.id === updatedUser.id) {
+          return updatedUser;
+        }
+        return user;
+      });
     },
+    async submitForm(context, formData) {
+      try {
+        const response = await axios.post(`${CapstoneEcommerceUrl}checkout`, formData);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+       
+      }
+    },
+  },
   actions: {
     async fetchProducts(context) {
       try{
-        const {data} = await axios.get(`${CapstoneEcommerceUrl}products`)
+        const {data} = await axios.get(`${CapstoneEcommerceUrl}Products`)
         context.commit("setProducts", data.results)
         console.log(data.results);
       }catch(e){
         context.commit("setMsg", "An error occured.")
       }
     },
-    async fetchProduct(context, ID) {
+    async fetchProduct(context, product_id) {
       try {
-        const { result } = await (await axios.get(`${CapstoneEcommerceUrl}products/${ID}`)).data;
+        const { result } = await (await axios.get(`${CapstoneEcommerceUrl}Products/${product_id}`)).data;
         context.commit("setProduct", result[0]);
       } catch (e) {
         context.commit("setMsg", "An error occurred.");
@@ -56,7 +71,7 @@ export default createStore({
     },
     async fetchUsers(context) {
       try {
-        const {data} = await axios.get(`${CapstoneEcommerceUrl}users`)
+        const {data} = await axios.get(`${CapstoneEcommerceUrl}Users`)
         context.commit("setUsers", data.results)
         console.log(data.results);
       } catch (error) {
@@ -65,7 +80,7 @@ export default createStore({
     },
     async addUser(context, newUser) {
       try {
-        const response = await axios.post(`${CapstoneEcommerceUrl}users/register`, newUser);
+        const response = await axios.post(`${CapstoneEcommerceUrl}Users/register`, newUser);
         context.commit("addUser", response.data);
         console.log("User added successfully!");
       } catch (error) {
@@ -73,18 +88,18 @@ export default createStore({
         throw error;
       }
     },
-    async deleteUser(context, ID) {
+    async deleteUser(context, user_id) {
       try {
-        await axios.delete(`${CapstoneEcommerceUrl}users/${ID}`);
-        context.commit("removeUser", ID);
+        await axios.delete(`${CapstoneEcommerceUrl}Users/${user_id}`);
+        context.commit("removeUser", user_id);
         console.log("User deleted successfully!");
       } catch (error) {
         console.error("Error deleting user:", error);
       }
     },
-    async updateUser(context, ID) {
+    async updateUser(context, user_id) {
       try {
-        await axios.patch(`${CapstoneEcommerceUrl}users/${ID}`);
+        await axios.patch(`${CapstoneEcommerceUrl}Users/${user_id}`);
         console.log("User updated successfully!");
         context.dispatch('fetchUsers');
       } catch (error) {
@@ -92,10 +107,10 @@ export default createStore({
       }
     }
   },
-  async deleteProduct(context, ID) {
+  async deleteProduct(context, product_id) {
     try {
-      await axios.delete(`${CapstoneEcommerceUrl}products/${ID}`);
-      context.commit("removeProduct", ID);
+      await axios.delete(`${CapstoneEcommerceUrl}Products/${product_id}`);
+      context.commit("removeProduct", product_id);
       console.log("Product deleted successfully!");
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -103,7 +118,7 @@ export default createStore({
   },
   async submitForm() {
     try {
-      const response = await axios.post('/checkout', this.formData);
+      const response = await axios.post('/Checkout', this.formData);
       console.log(response.data);
       this.submitted = true;
     } catch (error) {
