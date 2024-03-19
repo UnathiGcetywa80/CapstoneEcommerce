@@ -1,7 +1,8 @@
 <template>
   <div class="container">
+    <h2>Products</h2>
       <div class="sort-container">
-      <button @click="sortPrice('desc')">SortByPrice</button>
+      <button @click="sortBy('desc')">SortByPrice</button>
       <button @click="sortBy('asc')">SortByCategory</button>
   </div>
       <div class="product-container">
@@ -9,18 +10,23 @@
               <div class="image-container">
                   <img :src="product.imageURL" alt="product Image" class="product-image" />
               </div>
-              <div class="content">
-                  <h4>{{ productproductName }}</h4>
-                  <button @click="viewMore(product)">View More</button>
-                  <div v-if="product.showDetails">
-                      <p>Product: {{ product.price }}</p>
-                      <p>Description: {{ product.decription }}</p>
-                      <button @click="back(product)">Back</button>
-                  </div>
+              <div>
+    <ul>
+      <li v-for="product in Products" :key="product.id">
+        {{ product.product_id}}, 
+        {{ product.product_name}},
+        {{ product.category }},
+        {{ product.price}},
+        {{ product.stock_quantity}},
+        {{ product.description }},,
+        {{ product. created_at }}
+
+      </li>
+    </ul>
+  </div>
               </div>
               </div>
           </div>
-      </div>
 </template>
 <script>
 export default {
