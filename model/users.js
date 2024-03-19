@@ -40,11 +40,12 @@ class Users{
             insert into Users
             set ?;
             `
-            db.query(qry, [data], (err)=>{
+            db.query(qry, [data], (err,result)=>{
                 if(err) {
                     res.json({
                         status: res.statusCode,
-                        msg: 'This email address already exists'
+                        msg: 'This email address already exists',
+                        result
                     })
                 }else{
                     // create a token
@@ -52,7 +53,8 @@ class Users{
                     res.json({
                         status: res.statusCode,
                         token,
-                        msg: 'You\'re registered'
+                        msg: 'You\'re registered',
+                        result
                     })
                 }
                 })
