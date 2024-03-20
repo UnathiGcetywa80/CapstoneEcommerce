@@ -62,13 +62,12 @@ export default {
   name: 'NavbarComp',
 
   computed: {
-    // Check if logged in as admin
     adminLoggedIn() {
       const { cookies } = useCookies();
       console.log( cookies.get('LegitUser')?.result.userRole);
       return cookies.get('LegitUser')?.result?.userRole === 'admin';
     },
-    // Check if no user logged in
+    // Check if no user logged
     noUserLoggedInShow() {
       const { cookies } = useCookies()
       return cookies.get('LegitUser') == null;
