@@ -1,5 +1,9 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+import sweet from "sweetalert"
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+import AuthenticateUser from "../service/AuthenticatedUser";
 let CapstoneEcommerceUrl = "https://capstoneecommerce-1.onrender.com/";
 export default createStore({
   state: {
@@ -12,26 +16,27 @@ export default createStore({
   getters: {
   },
   mutations: {
-    setProducts(state, products){
-      state.products =products
+    setProducts(state, value){
+      state.products = value;
     },
-    setProduct(state, product){
-      state.product = product
+    setProduct(state, value){
+      console.log(value);
+      state.product = value;
     },
-    setMsg(state, Msg){
-      state.Msg = Msg
+    setMsg(state, value){
+      state.Msg = value;
     },
-    setUsers(state, users){
-      state.users = users;
+    setUsers(state, value){
+      state.users = value;
     },
-    setUser(state, user){
-      state.user = user;
+    setUser(state, value){
+      state.user = value;
     },
-    addUser(state, newUser) {
-      state.users.push(newUser);
+    addUser(state, value) {
+      state.users.push(value);
     },
-    removeUser(state, user_id) {
-      state.users = state.users.filter(user => user.id !== user_id);
+    removeUser(state, value) {
+      state.users = state.users.filter(user => user.id !== value);
     },
     updateUser(state, updatedUser) {
       state.users = state.users.map(user => {
@@ -54,20 +59,39 @@ export default createStore({
   actions: {
     async fetchProducts(context) {
       try{
-        const {data} = await axios.get(`${CapstoneEcommerceUrl}Products`)
-        context.commit("setProducts", data.results)
-        console.log(data.results);
-      }catch(e){
-        context.commit("setMsg", "An error occured.")
+        const {results} = (await axios.get(`${CapstoneEcommerceUrl}products`)).data
+        console.log(results);
+
+        if(results){
+          context.commit("setProducts", results)
+        }
+      }catch(err){
+        sweet({
+          title: "Error",
+          text: "An error occurred when retrieving Products.",
+          icon: "error",
+          timer: 2000,
+        });
       }
+      
     },
-    async fetchProduct(context, product_id) {
-      try {
-        const { result } = await (await axios.get(`${CapstoneEcommerceUrl}Products/${product_id}`)).data;
-        context.commit("setProduct", result[0]);
-      } catch (e) {
-        context.commit("setMsg", "An error occurred.");
+    async fetchProduct(context, payload) {
+      try{
+        // console.log("payload ->"+payload);
+        const {result}  =  (await axios.get(`${CapstoneEcommerceUrl}products/${payload}`)).data;
+        // console.log(result);
+        if(result){
+          context.commit("setProduct", result);
+        }
+      } catch(err){
+        sweet({
+          title: "Error",
+          text: "An error occurred when retrieving this product.",
+          icon: "error",
+          timer: 2000,
+        });
       }
+      
     },
     async fetchUsers(context) {
       try {
@@ -105,27 +129,75 @@ export default createStore({
       } catch (error) {
         console.error("Error updating user:", error);
       }
-    }
-  },
-  async deleteProduct(context, product_id) {
-    try {
-      await axios.delete(`${CapstoneEcommerceUrl}Products/${product_id}`);
-      context.commit("removeProduct", product_id);
-      console.log("Product deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
-  },
-  async submitForm() {
-    try {
-      const response = await axios.post('/Checkout', this.formData);
-      console.log(response.data);
-      this.submitted = true;
-    } catch (error) {
-      console.error('Error:', error);
-      this.error = true;
-      this.errorMessage = error.message || 'An error occurred during checkout.';
-    }
+    },
+    async deleteProduct(context, product_id) {
+      try {
+        console.log(product_id);
+        let {msg} = (await axios.delete(`${CapstoneEcommerceUrl}products/deleteProduct/${product_id}`)).data;
+        console.log("msg ->" +msg);
+        if(msg){
+          context.commit("setProduct");
+        }
+
+      } catch (error) {
+        sweet({
+          title: 'Error',
+          text: 'Failed to deleted Product.',
+          icon: 'error',
+          timer: 2000
+        });
+      }
+    },
+    async registerUser(context, userdata) {
+      try {
+        console.log(userdata);
+        let {result, msg, token} = await axios.post(`${CapstoneEcommerceUrl}users/register`, userdata);
+        console.log("msg ->" + result);
+        if(result){
+          context.commit("setUser", userdata )
+          cookies.set("User", {
+            msg,
+            token,
+            result,
+          });
+          AuthenticateUser.applyToken(token);
+          sweet({
+            title: "Success",
+            text: "User registered successfully!",
+            icon: "success",
+            timer: 2000,
+          });
+        } else{
+          sweet({
+            title: "Error",
+            text: "Failed to register user. Please try again.",
+            icon: "error",
+            timer: 2000,
+          });
+        }
+
+      } catch (error) {
+        console.error("Error during user registration:", error);
+        sweet({
+          title: "Error",
+          text: "An error occurred during user registration.",
+          icon: "error",
+          timer: 2000,
+        });
+      }
+    },
+
+    async submitForm() {
+      try {
+        const response = await axios.post('/Checkout', this.formData);
+        console.log(response.data);
+        this.submitted = true;
+      } catch (error) {
+        console.error('Error:', error);
+        this.error = true;
+        this.errorMessage = error.message || 'An error occurred during checkout.';
+      }
+    },
   },
   modules: {
   }
