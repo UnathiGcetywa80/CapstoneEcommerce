@@ -1,54 +1,77 @@
 <template>
-    <body>
-        <div class="container">
-            <div class="register-container">
-                <h2>Register</h2>
-                <form id="registerForm" @submit.prevent="registerFormSubmit">
-                    <input type="text" v-model="userData.username" placeholder="Username" id="username" required>
-                    <input type="email" v-model="userData.email" placeholder="Email" id="email" required>
-                    <input type="password" v-model="userData.password" placeholder="Password" id="password" required>
-                    <button type="submit">Register</button>
-                </form>
-                <!-- <p>Already have an account? <a href="login.html">Login here</a></p> -->
-            </div>
-            <div class="login-container">
-                <h2>Login</h2>
-                <form id="loginForm">
-                    <input type="email" placeholder="Email" id="email" required>
-                    <input type="password" placeholder="Password" id="password" required>
-                    <button type="submit">Login</button>
-                </form>
-                <!-- <p>Don't have an account? <a href="register.html">Register here</a></p> -->
-            </div>
-        </div>
-    </body>
-    </template>
+    <div class="container">
+      <div class="register-container">
+        <h2>Register</h2>
+        <form @submit.prevent="registerFormSubmit">
+          <input type="text" v-model="registerUserData.full_name" placeholder="Full Name" required>
+          <input type="text" v-model="registerUserData.username" placeholder="Username" required>
+          <input type="email" v-model="registerUserData.email" placeholder="Email" required>
+          <input type="password" v-model="registerUserData.password" placeholder="Password" required>
+          <select v-model="registerUserData.userRole" class="form-select" required>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button type="submit">Register</button>
+        </form>
+      </div>
+      <div class="login-container">
+  <h2>Login</h2>
+  <form @submit.prevent="loginFormSubmit">
+    <input type="email" v-model="loginData.email" placeholder="Email" required>
+    <input type="password" v-model="loginData.password" placeholder="Password" required>
+    <select v-model="loginData.userRole" class="form-select" required>
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Login</button>
+  </form>
+</div>
 
-    <script scoped>
-        export default{
-            name : 'loginViewww',
 
-            data(){
-                return {
-                    userData : {
-                        username : '',
-                        email : '',
-                        password : ''
-                    }
-                }
-            },
 
-            methods : {
-                registerFormSubmit(){
-                    this.$store.dispatch('registerUser', this.userData)
-                }
-            }
-
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    name: 'LoginView',
+  
+    data() {
+      return {
+        registerUserData: {
+          userRole: '',
+          full_name: '',
+          username: '',
+          email: '',
+          password: ''
+        },
+        loginData: {
+          email: '',
+          password: '',
+          userRole: this.userRole
         }
-    </script>
-    
-    <style>
-    body, h2, form, input, button, p, a {
+      }
+    },
+  
+    methods: {
+       registerFormSubmit() {
+      
+          this.$store.dispatch('registerUser', this.registerUserData);
+          this.$router.push('/products'); 
+       
+      },
+  
+       loginFormSubmit() {
+        this.loginData.full_name = this.$store.state.user ? this.$store.state.user.full_name : ''; // Set full_name from store
+        this.$store.dispatch('loginUser', this.loginData);
+        this.$router.push('/products')
+      }
+    }
+  }
+  </script>
+  
+  <style scoped>
+ body, h2, form, input, button, p, a {
         margin: 0;
         padding: 0;
     }
@@ -118,5 +141,5 @@
     a:hover {
         text-decoration: underline;
     }
-    </style>
-    
+  </style>
+  
