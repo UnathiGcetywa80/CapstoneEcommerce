@@ -9,7 +9,7 @@
                     <h5 class="card-title">{{ singleProduct.productName }}</h5>
                     <p class="card-text">{{ singleProduct.decription }}</p>
                     <router-link class="btn btn-primary" :to="{ name: 'product', params: { id: singleProduct.product_id } }">
-                        View More
+                        Add to cart
                     </router-link>
                 </div>
             </div>
