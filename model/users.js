@@ -92,10 +92,10 @@ class Users {
   login(req, res) {
     const { email, password } = req.body
     const qry = `
-        SELECT username, password,
-        email, full_name created_at
+        SELECT user_id, username, password,
+        email, userRole, full_name, created_at
         FROM Users
-        WHERE email = '${email}';
+        WHERE email='${email}';
         `
     db.query(qry, async (err, result) => {
       if (err) throw err
@@ -115,7 +115,7 @@ class Users {
             status: res.statusCode,
             msg: "you're logged in",
             token,
-            result: result[0]
+            result
           })
         } else {
           res.json({
