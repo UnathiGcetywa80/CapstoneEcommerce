@@ -2,19 +2,17 @@
 
 
     <div class="container">
-        <div class="row d-flex justify-content-evenly" v-if="singleProduct">
-            <div class="card" style="width: 18rem;">
+        <div class="row d-flex justify-content-center" v-if="singleProduct">
+            <div class="card m-3" style="width: 24rem;">
                 <img :src="singleProduct.Image" class="card-img-top" :alt="singleProduct.Image">
                 <div class="card-body">
-                    <h5 class="card-title">{{ singleProduct.productName }}</h5>
-                    <p class="card-text">{{ singleProduct.decription }}</p>
-                    <router-link class="btn btn-primary" :to="{ name: 'product', params: { id: singleProduct.product_id } }">
-                        Add to cart
-                    </router-link>
+                    <h5 class="card-title">{{ singleProduct.product_name }}</h5>
+                    <p class="card-text">{{ singleProduct.description }}</p>
+                    
+                    <a href="#" class="btn btn-primary">Checkout</a>
                 </div>
             </div>
 
-            <h1>{{ singleProduct.Image }}</h1>
         </div>
 
 
@@ -36,11 +34,7 @@ export default {
 
     },
 
-
-
     mounted() {
-
-        console.log('Product ->' + this.$store.state.product);
         this.$store.dispatch("fetchProduct",  this.$route.params.id );
     },
 };
