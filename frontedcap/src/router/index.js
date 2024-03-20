@@ -32,6 +32,11 @@ const routes = [
     name: 'reviews',
     component: () => import('../views/ReviewsView.vue')
   },
+  // {
+  //   path: '/cart',
+  //   name: 'cart',
+  //   component: () => import('../views/CartView.vue')
+  // },
   {
     path: '/contact',
     name: 'contact',

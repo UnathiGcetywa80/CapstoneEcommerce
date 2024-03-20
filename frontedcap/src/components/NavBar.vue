@@ -39,6 +39,11 @@
               Reviews
             </router-link> 
           </li>
+          <!-- <li class="nav-item">
+            <router-link to="/cart" class="nav-link lobster-text">
+              Cart
+            </router-link> 
+          </li> -->
           <li class="nav-item">
             <router-link to="/contact" class="nav-link lobster-text">
               Contact
