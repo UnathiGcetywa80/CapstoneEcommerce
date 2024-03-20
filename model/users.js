@@ -19,7 +19,7 @@ class Users {
   fetchUser(req, res) {
     const qry = `SELECT user_id, username, password,
         email, userRole, full_name, created_at FROM Users
-            WHERE user_id = ${req.params.user_id};
+            WHERE user_id = ${req.params.id};
             `;
     db.query(qry, (err, result) => {
       if (err) throw err;
@@ -68,8 +68,8 @@ class Users {
     const qry = `
               UPDATE Users
               SET ?
-              WHERE user_id = ?`;
-    db.query(qry, [data, req.params.user_id], (err) => {
+              WHERE user_id=${req.params.id}`;
+    db.query(qry, [data], (err) => {
       if (err) throw err;
       res.json({
         status: res.statusCode,
