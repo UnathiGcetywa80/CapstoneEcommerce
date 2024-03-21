@@ -13,7 +13,7 @@ cartRouter.get('/', (req, res)=>{
         })
     }
 })
-cartRouter.get('/:id', (req, res)=>{
+cartRouter.get('/:id/cart', (req, res)=>{
     try{
         cart.fetchUserOrder(req, res)
     }catch(e){
