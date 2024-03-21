@@ -1,5 +1,6 @@
 import {usersRouter, express} from './controller/users.js';
 import {productRouter} from './controller/product.js';
+import { cartRouter } from './controller/CartController.js';
 import cookieParser from 'cookie-parser';
 import {errorHandling} from './middleware/errorHandling.js';
 import cors from 'cors';
@@ -19,7 +20,11 @@ app.get('^/$|/bebright', (req, res)=>{
     res.statusCode(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', usersRouter)
+
 app.use('/products', productRouter)
+
+app.use('/cart', cartRouter)
+
 app.use(errorHandling)
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
