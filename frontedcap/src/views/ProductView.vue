@@ -8,8 +8,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ singleProduct.product_name }}</h5>
                     <p class="card-text">{{ singleProduct.description }}</p>
-                    
-                    <a href="#" class="btn btn-primary">Checkout</a>
+
+                    <a href="#" class="btn btn-primary" @click="addItemToCart()">Checkout</a>
                 </div>
             </div>
 
@@ -21,8 +21,10 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
 export default {
     name: "producView",
+
     components: {
 
     },
@@ -34,8 +36,22 @@ export default {
 
     },
 
+
+    methods: {
+        addItemToCart() {
+            const { cookies } = useCookies()
+            const formData = {
+                user_id: cookies.get('LegitUser').result.user_id,
+                product_id: this.$store.state.product.product_id,
+                quantity: 1 
+            };
+            this.$store.dispatch("addToCart", formData);
+
+        }
+    },
+
     mounted() {
-        this.$store.dispatch("fetchProduct",  this.$route.params.id );
+        this.$store.dispatch("fetchProduct", this.$route.params.id);
     },
 };
 </script>
