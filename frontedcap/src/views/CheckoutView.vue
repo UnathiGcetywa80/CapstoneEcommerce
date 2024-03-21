@@ -1,52 +1,69 @@
 <template>
-    <body background="">
-      <main class="container-fluid">
-        <div class="row">
-          <h2 class="display-2">Shopping cart</h2>
+
+<div class="row">
+            <h2 class="display-2">Shopping cart</h2>
         </div>
         <div class="row">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  Product Name
-                </th>
-                <th>
-                  Quantity
-                </th>
-                <th>
-                  Cost(R)
-                </th>
-                <th>
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody data-checkout>
-            </tbody>
-          </table>
+            <table>
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Customer Name</th>
+            <th>Product Name</th>
+
+            <th>Quantity</th>
+            <th>Cost(R)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr  v-for="item in cartItems" :key="item.id">
+            
+            <td>{{ item.cart_item_id }}</td>
+            <td>{{ item.buyers_name}}</td>
+            <td>{{ item.book_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.total_price}}</td>
+        </tr>
+    </tbody>
+</table>
+
         </div>
         <div>
-          <button onclick="clearCart()" id="BClear">Clear Cart</button>
-          <button onclick="buyNow()" id="Bbuy">Buy Now</button>
-          <p id="Message" style="display: none;">Thank For Shopping With Us</p>
+            <button onclick="clearCart()" checkout-clear-all id="BClear">Clear Cart </button>
+            <button onclick="BuyNow()" checkout-buy-now id="Bbuy">Buy Now</button>
+            <tr>
+                <td id="Tcost" class="text-end">Total Cost:</td>
+            </tr>
+            <p id="Message" style="display: none;">Thank For Shopping With Us</p>
         </div>
-      </main>
-    </body>
-  </template>
-  
-  <!-- <script>
-    // Function to clear the cart
-    function clearCart() {
-      // You need to implement this function according to your logic
-      console.log("Cart cleared!"); // For demonstration purposes
+</template>
+
+<script>
+import { useCookies } from "vue3-cookies";
+export default{
+    name : 'CheckoutView',
+
+    computed : {
+        cartItems(){
+            return this.$store.state.cart
+        }
+    },
+
+    methods : {
+        userId(){
+            let {cookies} = useCookies()
+             return cookies.get('LegitUser').result.user_id;
+        }
+    },
+
+    mounted(){
+        // console.log(this.cartItems)
+        this.$store.dispatch('userCart', this.userId())
     }
-  
-    // Function to initiate the buying process
-    function buyNow() {
-      // You need to implement this function according to your logic
-      console.log("Buying items..."); // For demonstration purposes
-      document.getElementById("Message").style.display = "block"; // Show the "Thank you" message
-    }
-  </script>
-   -->
+}
+
+</script>
+
+<style scoped>
+
+</style>
