@@ -1,10 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <!-- <a class="navbar-brand" href="#">
-        <img src="https://i.postimg.cc/nhjKLxXL/BOOK-SHOP.png" alt="Logo" height="30">
-      </a> -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -12,47 +10,44 @@
           <li class="nav-item">
             <router-link to="/" class="nav-link lobster-text">
               Home
-            </router-link> 
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/about" class="nav-link lobster-text">
               About
-            </router-link> 
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/products" class="nav-link lobster-text">
               Products
-            </router-link> 
-          </li>
-          <li class="nav-item">
-            <router-link to="/admin" class="nav-link lobster-text">
-              Admin
-            </router-link> 
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/checkout" class="nav-link lobster-text">
               Checkout
-            </router-link> 
+            </router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/reviews" class="nav-link lobster-text">
-              Reviews
-            </router-link> 
+          <li v-if="adminLoggedIn" class="nav-item">
+            <router-link to="/admin" class="nav-link lobster-text">
+              Admin
+            </router-link>
           </li>
-          <!-- <li class="nav-item">
-            <router-link to="/cart" class="nav-link lobster-text">
-              Cart
-            </router-link> 
-          </li> -->
           <li class="nav-item">
             <router-link to="/contact" class="nav-link lobster-text">
               Contact
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- Display admin link if logged in as admin -->
+          <li v-if="noUserLoggedInShow" class="nav-item">
             <router-link to="/login" class="nav-link lobster-text">
-              Login/Register  
+              Login/Register
             </router-link>
+          </li>
+          <!-- Display logout button if someone is logged in -->
+          <li v-if="someoneLoggedInShow" class="nav-item">
+            <button @click="logout" class="nav-link lobster-text">
+              Logout
+            </button>
           </li>
         </ul>
       </div>
@@ -61,8 +56,38 @@
 </template>
 
 <script>
+import { useCookies } from 'vue3-cookies'
+
 export default {
-  // name: 'Navbar',
+  name: 'NavbarComp',
+
+  computed: {
+    // Check if logged in as admin
+    adminLoggedIn() {
+      const { cookies } = useCookies();
+      console.log( cookies.get('LegitUser')?.result.userRole);
+      return cookies.get('LegitUser')?.result?.userRole === 'admin';
+    },
+    // Check if no user logged in
+    noUserLoggedInShow() {
+      const { cookies } = useCookies()
+      return cookies.get('LegitUser') == null;
+    },
+    // Check if someone is logged in
+    someoneLoggedInShow() {
+      const { cookies } = useCookies()
+      return cookies.get('LegitUser');
+    }
+  },
+
+  methods: {
+    // Logout function
+    logout() {
+      const { cookies } = useCookies()
+      cookies.remove('LegitUser'); 
+      this.$router.push('/login');
+    }
+  }
 }
 </script>
 

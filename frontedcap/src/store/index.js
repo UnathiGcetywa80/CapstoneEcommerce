@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
 import sweet from "sweetalert"
+import router from '@/router'
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 import AuthenticateUser from "../service/AuthenticatedUser";
@@ -11,7 +12,7 @@ export default createStore({
     product: null,
     users: null,
     user: null,
-    token: null,
+    cart: null,
   },
   getters: {
   },
@@ -20,7 +21,6 @@ export default createStore({
       state.products = value;
     },
     setProduct(state, value){
-      console.log(value);
       state.product = value;
     },
     setMsg(state, value){
@@ -35,17 +35,13 @@ export default createStore({
     addUser(state, value) {
       state.users.push(value);
     },
+    setCart(state,value){
+      state.cart = value
+    },
     removeUser(state, value) {
       state.users = state.users.filter(user => user.id !== value);
     },
-    updateUser(state, updatedUser) {
-      state.users = state.users.map(user => {
-        if (user.id === updatedUser.id) {
-          return updatedUser;
-        }
-        return user;
-      });
-    },
+
     async submitForm(context, formData) {
       try {
         const response = await axios.post(`${CapstoneEcommerceUrl}checkout`, formData);
@@ -57,10 +53,10 @@ export default createStore({
     },
   },
   actions: {
+// PRODUCTS ROUTES
     async fetchProducts(context) {
       try{
         const {results} = (await axios.get(`${CapstoneEcommerceUrl}products`)).data
-        console.log(results);
 
         if(results){
           context.commit("setProducts", results)
@@ -77,9 +73,7 @@ export default createStore({
     },
     async fetchProduct(context, payload) {
       try{
-        // console.log("payload ->"+payload);
         const {result}  =  (await axios.get(`${CapstoneEcommerceUrl}products/${payload}`)).data;
-        // console.log(result);
         if(result){
           context.commit("setProduct", result);
         }
@@ -93,6 +87,25 @@ export default createStore({
       }
       
     },
+    async deleteProduct(context, product_id) {
+      try {
+     
+        let {msg} = (await axios.delete(`${CapstoneEcommerceUrl}products/deleteProduct/${product_id}`)).data;
+        if(msg){
+          context.commit("setProduct");
+        }
+
+      } catch (error) {
+        sweet({
+          title: 'Error',
+          text: 'Failed to deleted Product.',
+          icon: 'error',
+          timer: 2000
+        });
+      }
+    },
+
+// USER ROUTES
     async fetchUsers(context) {
       try {
         const {data} = await axios.get(`${CapstoneEcommerceUrl}Users`)
@@ -130,43 +143,20 @@ export default createStore({
         console.error("Error updating user:", error);
       }
     },
-    async deleteProduct(context, product_id) {
-      try {
-        console.log(product_id);
-        let {msg} = (await axios.delete(`${CapstoneEcommerceUrl}products/deleteProduct/${product_id}`)).data;
-        console.log("msg ->" +msg);
-        if(msg){
-          context.commit("setProduct");
-        }
-
-      } catch (error) {
-        sweet({
-          title: 'Error',
-          text: 'Failed to deleted Product.',
-          icon: 'error',
-          timer: 2000
-        });
-      }
-    },
+    
     async registerUser(context, userdata) {
       try {
-        console.log(userdata);
-        let {result, msg, token} = await axios.post(`${CapstoneEcommerceUrl}users/register`, userdata);
-        console.log("msg ->" + result);
-        if(result){
-          context.commit("setUser", userdata )
-          cookies.set("User", {
-            msg,
-            token,
-            result,
-          });
-          AuthenticateUser.applyToken(token);
+        let {data} = await axios.post(`${CapstoneEcommerceUrl}users/register`, userdata);
+ 
+        if(data){
           sweet({
             title: "Success",
-            text: "User registered successfully!",
+            text: data.msg,
             icon: "success",
             timer: 2000,
           });
+          router.push('/products')
+          window.location.reload();
         } else{
           sweet({
             title: "Error",
@@ -187,6 +177,89 @@ export default createStore({
       }
     },
 
+    async loginUser(context, payload) {
+      try {
+        const { msg, token, result } = (await axios.post(`${CapstoneEcommerceUrl}users/login`, payload)).data
+        if (result) {
+          context.commit("setUser", result);
+          cookies.set("LegitUser", { msg, result, token });
+          AuthenticateUser.applyToken(token);
+          window.location.reload();
+          sweet({
+            title: msg,
+            text: `Welcome back, ${result?.full_name}`,
+            icon: "success",
+            timer: 5000,
+          });
+          router.push('/products');
+        } else {
+          sweet({
+            title: "info",
+            text: msg,
+            icon: "info",
+            timer: 5000,
+          });
+        }
+      } catch (error) {
+        sweet({
+          title: "Error",
+          text: "Failed to login.",
+          icon: "error",
+          timer: 5000,
+        });
+      }
+    },
+
+  // CART ROUTES
+  async addToCart(context, formData) {
+    try {
+      const response = await axios.post(`${CapstoneEcommerceUrl}cart/add`, formData);
+      console.log(response.data);
+      if(response.data){
+        context.commit('setCart',response.data)
+        sweet({
+          title: "Success",
+          text: "Item added to cart successfully.",
+          icon: "success",
+          timer: 2000,
+        });
+        router.push('/products')
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      sweet({
+        title: "Error",
+        text: "Failed to add item to cart.",
+        icon: "error",
+        timer: 2000,
+      });
+    }
+  },
+
+  async userCart(context, payload) {
+    try {
+
+      let { results } = (
+        await axios.get(`${CapstoneEcommerceUrl}cart/${payload}/cart`)
+      ).data;
+      // console.log(results);
+      if (results) {
+        context.commit("setCart", results);
+      }
+    } catch (e) {
+      sweet({
+        title: "Error",
+        text: "An error occurred when retrieving your items.",
+        icon: "error",
+        timer: 2000,
+      });
+    }
+  },
+
+
+
+
+// 
     async submitForm() {
       try {
         const response = await axios.post('/Checkout', this.formData);
