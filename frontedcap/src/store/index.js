@@ -221,6 +221,7 @@ export default createStore({
           icon: "success",
           timer: 2000,
         });
+        router.push('/products')
       }
     } catch (error) {
       console.error("Error adding item to cart:", error);
@@ -232,6 +233,28 @@ export default createStore({
       });
     }
   },
+
+  async userCart(context, payload) {
+    try {
+
+      let { results } = (
+        await axios.get(`${CapstoneEcommerceUrl}cart/${payload}/cart`)
+      ).data;
+      // console.log(results);
+      if (results) {
+        context.commit("setCart", results);
+      }
+    } catch (e) {
+      sweet({
+        title: "Error",
+        text: "An error occurred when retrieving your items.",
+        icon: "error",
+        timer: 2000,
+      });
+    }
+  },
+
+
 
 
 // 
