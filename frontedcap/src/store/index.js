@@ -146,9 +146,8 @@ export default createStore({
     
     async registerUser(context, userdata) {
       try {
-        console.log(userdata);
         let {data} = await axios.post(`${CapstoneEcommerceUrl}users/register`, userdata);
-        console.log("msg ->" + data);
+ 
         if(data){
           sweet({
             title: "Success",
@@ -156,6 +155,8 @@ export default createStore({
             icon: "success",
             timer: 2000,
           });
+          router.push('/products')
+          window.location.reload();
         } else{
           sweet({
             title: "Error",
@@ -183,6 +184,7 @@ export default createStore({
           context.commit("setUser", result);
           cookies.set("LegitUser", { msg, result, token });
           AuthenticateUser.applyToken(token);
+          window.location.reload();
           sweet({
             title: msg,
             text: `Welcome back, ${result?.full_name}`,
