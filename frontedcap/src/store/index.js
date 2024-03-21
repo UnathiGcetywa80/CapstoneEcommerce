@@ -12,7 +12,7 @@ export default createStore({
     product: null,
     users: null,
     user: null,
-    token: null,
+    cart: null,
   },
   getters: {
   },
@@ -35,6 +35,9 @@ export default createStore({
     addUser(state, value) {
       state.users.push(value);
     },
+    setCart(state,value){
+      state.cart = value
+    },
     removeUser(state, value) {
       state.users = state.users.filter(user => user.id !== value);
     },
@@ -54,7 +57,6 @@ export default createStore({
     async fetchProducts(context) {
       try{
         const {results} = (await axios.get(`${CapstoneEcommerceUrl}products`)).data
-        console.log(results);
 
         if(results){
           context.commit("setProducts", results)
@@ -71,9 +73,7 @@ export default createStore({
     },
     async fetchProduct(context, payload) {
       try{
-        // console.log("payload ->"+payload);
         const {result}  =  (await axios.get(`${CapstoneEcommerceUrl}products/${payload}`)).data;
-        // console.log(result);
         if(result){
           context.commit("setProduct", result);
         }
@@ -207,7 +207,31 @@ export default createStore({
         });
       }
     },
-    
+
+  // CART ROUTES
+  async addToCart(context, formData) {
+    try {
+      const response = await axios.post(`${CapstoneEcommerceUrl}cart/add`, formData);
+      console.log(response.data);
+      if(response.data){
+        context.commit('setCart',response.data)
+        sweet({
+          title: "Success",
+          text: "Item added to cart successfully.",
+          icon: "success",
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      sweet({
+        title: "Error",
+        text: "Failed to add item to cart.",
+        icon: "error",
+        timer: 2000,
+      });
+    }
+  },
 
 
 // 
