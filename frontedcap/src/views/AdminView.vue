@@ -63,8 +63,8 @@
             <td>{{ product.product_id }}</td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.category }}</td>
-            <td>{{ product.stock_quantity }}</td>
             <td>{{ product.price }}</td>
+            <td>{{ product.stock_quantity }}</td>
             <td>{{ product.description }}</td>
             <td><img :src="product.Image" style="width: 80%;" alt="product"></td>
             <td>
