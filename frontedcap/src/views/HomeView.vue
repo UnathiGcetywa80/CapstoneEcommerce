@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img src="https://i.postimg.cc/qvGVKcjK/pngtree-library-backdrop-with-antique-books-bookstore-shelves-and-a-treasure-trove-of-knowledge-publ.jpg" alt="" class="homePage">
+    <img src="https://i.postimg.cc/tJGbv9qz/homeimg3.jpg" alt="" class="homePage">
     <div class="overlay-text">
       <p class="bright-text">BE BRIGHT</p>
     </div>

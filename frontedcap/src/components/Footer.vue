@@ -32,7 +32,7 @@ export default {
 }
 
 .fixed-bottom {
-  background-color: #716604;
+  background-color: grey;
   color: #fff;
   padding: 10px;
 }
