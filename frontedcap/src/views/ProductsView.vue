@@ -44,7 +44,7 @@ export default {
       product.showDetails = !product.showDetails;
     },
     sortBy(sortType) {
-      if (sortType === 'desc') {
+      if (sortType === 'name') {
         this.products.sort((a, b) => b.productName.localeCompare(a.productName))
       } else {
         this.products.sort((a, b) => a.productName.localeCompare(b.productName))

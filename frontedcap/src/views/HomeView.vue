@@ -39,6 +39,6 @@ export default {
 
 .bright-text {
   font-family: 'Lobster', cursive;
-  font-size: 100px;
+  font-size: 130px;
 }
 </style>

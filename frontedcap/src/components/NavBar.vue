@@ -5,6 +5,10 @@
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <RouterLink to="/">
+  <img class="img-fluid" loading="lazy" src="https://i.postimg.cc/JzfvwTNK/be-bright.png" alt="logo" id="logo" style="width: 80px; height: auto;">
+</RouterLink>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -93,20 +97,27 @@ export default {
 
 <style scoped>
 .navbar {
-  background-color: grey;
+  background-color: #878787; 
   color: white;
-}
-
-.navbar-nav {
-  color: white;
-}
-
-.lobster-text {
-  color: white;
-  font-family: 'Lobster', cursive;
-}
+  padding: 10px 20px;
+ }
 
 .navbar-nav {
   margin-left: auto;
+}
+
+.navbar-brand img {
+  width: 80px; 
+  height: auto; 
+}
+
+.navbar-nav .nav-link {
+  color: white;
+  font-family: 'Lobster', cursive;
+  margin-left: 15px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #d4d4d3; 
 }
 </style>
