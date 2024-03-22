@@ -35,8 +35,8 @@ align-items: center;
 z-index: 3333;
 }
 .loader-spinner {
-border: 6px double rgb(107, 128, 0);
-border-top: 6px solid rgb(252, 209, 55);
+border: 6px double rgb(90, 90, 89);
+border-top: 6px solid rgb(81, 81, 81);
 border-radius: 50%;
 width: 80px;
 height: 80px;

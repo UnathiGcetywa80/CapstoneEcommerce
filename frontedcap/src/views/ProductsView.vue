@@ -1,10 +1,14 @@
 <template>
   <div class="container">
-    <div class="sort-container">
-      <button @click="sortPrice('desc')">SortByPrice</button>
-      <button @click="sortBy('asc')">SortByCategory</button>
+    <h2 class="display-2" id="OURPRODUCTS">Our Poducts</h2>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search products..." v-model="searchQuery">
+      <button class="btn btn-outline-secondary" type="button" @click="searchProducts">Search</button>
     </div>
-
+    <div>
+      <button class="btn btn-outline-secondary" type="button" @click="sortBy('name')">Sort by Name</button>
+      <button class="btn btn-outline-secondary" type="button" @click="sortBy('category')">Sort by Category</button>
+    </div>
     <div class="row d-flex justify-content-center">
 
       <div class="card m-2" v-for="products in product" :key="products.id" style="width: 18rem;">
@@ -53,22 +57,42 @@ export default {
 }
 </script>
 <style scoped>
+.product-card {
+  width: 18rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+ }
 
-button {
-  padding: 10px 20px;
-  background-color: black;
-  color: white;
+
+.product-card:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.card-text {
+  color: #555;
+}
+
+.btn-primary {
+  background-color: #9a9998;
+  color: #fff;
   border: none;
-  margin-right: 10px;
-  border-radius: 20px;
+  border-radius: 5px;
+  padding: 8px 16px;
   cursor: pointer;
 }
 
-button:last-child {
-  margin-right: 0;
+.btn-primary:hover {
+  background-color: #91918f;
 }
 
-button:hover {
-  background-color: #0056B3;
+#OURPRODUCTS {
+  font-family: 'Lobster', cursive;
+  margin-bottom: 20px;
 }
 </style>
